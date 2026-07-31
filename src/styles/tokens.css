@@ -1,0 +1,19 @@
+:root {
+  --paper: #f4f0e8;
+  --paper-raised: #fbf8f1;
+  --paper-deep: #e9e3d7;
+  --ink: #17140f;
+  --ink-soft: #3d382f;
+  --muted: #6d675b;
+  --muted-light: #9a9385;
+  --vermilion: #a63c2b;
+  --vermilion-deep: #7f2d21;
+  --hairline: rgba(23, 20, 15, 0.22);
+  --hairline-soft: rgba(23, 20, 15, 0.12);
+  --serif: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+  --sans: "Avenir Next", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: Consolas, "SFMono-Regular", "Cascadia Mono", monospace;
+  --page-gutter: clamp(1.25rem, 4vw, 4rem);
+  --max-width: 1180px;
+  --shadow-paper: 0 1px 0 rgba(23, 20, 15, 0.08), 0 12px 28px rgba(23, 20, 15, 0.06);
+}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.superpowers/
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Local debug artifacts
+cdp-result.txt
+chrome-dump.txt
+typhoon-verify.png
+dom-dump*.txt

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="台风强度换算工具与正在规划的实验索引。" />
+    <title>实验舱 / 张梓皓个人观测站</title>
+  </head>
+  <body data-page="lab">
+    <div class="page-shell">
+      <div id="site-header"></div>
+      <main id="main-content">
+        <header class="page-heading">
+          <div>
+            <p class="page-heading__issue">ISSUE 05 / 实验舱</p>
+            <h1>实验舱</h1>
+          </div>
+          <p class="page-heading__note">工具会慢慢生长：这里收录可用的换算器与规划中的实验。</p>
+        </header>
+
+        <section class="lab-featured" aria-labelledby="converter-title">
+          <div class="lab-featured__intro">
+            <span class="lab-featured__number">EXPERIMENT 01</span>
+            <h2 id="converter-title">台风强度换算</h2>
+            <p>在风速与蒲福风级之间换算，并查看对应的风力等级。</p>
+          </div>
+          <div class="converter" id="converter">
+            <div class="converter__field">
+              <label for="wind-speed">风速 (km/h)</label>
+              <div class="input-row">
+                <input id="wind-speed" type="number" min="0" step="1" value="118" inputmode="decimal" />
+                <span>km/h</span>
+              </div>
+            </div>
+            <div class="converter__divider" aria-hidden="true">↔</div>
+            <div class="converter__field">
+              <label for="beaufort">蒲福风级 (0–17)</label>
+              <div class="input-row">
+                <input id="beaufort" type="number" min="0" max="17" step="1" value="12" inputmode="numeric" />
+                <span>级</span>
+              </div>
+            </div>
+            <dl class="converter__result">
+              <div><dt>风力等级</dt><dd id="result-level">强风</dd></div>
+              <div><dt>风力描述</dt><dd id="result-desc">大枝摇动</dd></div>
+              <div><dt>折算风速</dt><dd id="result-wind">118 km/h</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="lab-list" aria-labelledby="lab-list-title">
+          <div class="section-heading">
+            <h2 id="lab-list-title">实验索引</h2>
+            <p>正在规划中的小实验，会陆续接入。</p>
+          </div>
+          <div class="lab-grid">
+            <article class="lab-card lab-card--planned">
+              <span class="lab-card__status">规划中</span>
+              <h3>天气日志</h3>
+              <p>自动记录每日天气，并生成可翻阅的观测档案。</p>
+            </article>
+            <article class="lab-card lab-card--planned">
+              <span class="lab-card__status">规划中</span>
+              <h3>延迟可视化</h3>
+              <p>把网络探针结果整理成更直观的时空视图。</p>
+            </article>
+          </div>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module" src="/src/pages/lab.ts"></script>
+  </body>
+</html>

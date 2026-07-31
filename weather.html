@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="使用 Open-Meteo 获取上海、北京、广州的实时天气与 7 日预报。" />
+    <title>天气站 / 张梓皓个人观测站</title>
+  </head>
+  <body data-page="weather">
+    <div class="page-shell">
+      <div id="site-header"></div>
+      <main id="main-content">
+        <header class="page-heading">
+          <div>
+            <p class="page-heading__issue">ISSUE 03 / 天气站</p>
+            <h1>天气观测站</h1>
+          </div>
+          <p class="page-heading__note">使用 Open-Meteo 获取实时天气，失败时自动切换到演示数据。</p>
+        </header>
+
+        <div class="city-switch" role="group" aria-label="选择城市" id="city-switch">
+          <button class="city-button is-active" type="button" data-city="shanghai" aria-pressed="true">上海</button>
+          <button class="city-button" type="button" data-city="beijing" aria-pressed="false">北京</button>
+          <button class="city-button" type="button" data-city="guangzhou" aria-pressed="false">广州</button>
+        </div>
+
+        <section class="weather-current" aria-labelledby="current-title">
+          <div class="weather-current__main">
+            <p class="page-heading__issue" id="current-location">SHANGHAI / 上海</p>
+            <p class="weather-temp" id="current-temp">--°</p>
+            <h2 id="current-title" class="weather-desc">加载中...</h2>
+            <p id="current-meta" class="weather-meta">体感 --° · 湿度 --% · 风速 -- km/h</p>
+          </div>
+          <div class="weather-current__stats" aria-label="当前天气指标">
+            <div><span>体感温度</span><strong id="stat-feels">--°</strong></div>
+            <div><span>相对湿度</span><strong id="stat-humidity">--%</strong></div>
+            <div><span>风速</span><strong id="stat-wind">--</strong></div>
+            <div><span>风向</span><strong id="stat-direction">--</strong></div>
+          </div>
+        </section>
+
+        <section class="forecast-section" aria-labelledby="forecast-title">
+          <div class="section-heading">
+            <h2 id="forecast-title">7 日预报</h2>
+            <p id="forecast-source" class="source-line">SOURCE: OPEN-METEO / LIVE</p>
+          </div>
+          <ol class="forecast-list" id="forecast-list">
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+            <li class="forecast-row is-skeleton"><span>—</span><span>--</span><span>-- / --°</span></li>
+          </ol>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module" src="/src/pages/weather.ts"></script>
+  </body>
+</html>

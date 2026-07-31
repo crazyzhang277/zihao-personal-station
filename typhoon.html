@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JMA、CMA、CWA 与 JTWC 真实台风数据，多源对比路径、强度、风圈与预报。" />
+    <title>台风多源雷达 / 张梓皓个人观测站</title>
+  </head>
+  <body data-page="typhoon">
+    <div class="page-shell">
+      <div id="site-header"></div>
+      <main id="main-content">
+        <header class="page-heading">
+          <div>
+            <p class="page-heading__issue">ISSUE 02 / TYPHOON RADAR</p>
+            <h1>台风多源观测</h1>
+          </div>
+          <p class="page-heading__note">同时接入 JMA 日本气象厅、CMA 中央气象台、CWA 台湾中央气象署与 JTWC 美国联合台风警报中心，对比真实路径、风圈与预报，每 5 分钟自动刷新。</p>
+        </header>
+
+        <section class="typhoon-live" aria-labelledby="typhoon-live-title">
+          <div class="typhoon-toolbar">
+            <div>
+              <p class="page-heading__issue">LIVE FEED</p>
+              <h2 id="typhoon-live-title">实时台风对比</h2>
+            </div>
+            <div class="typhoon-toolbar__meta">
+              <span id="data-badge" class="typhoon-data-badge typhoon-data-badge--loading">连接中</span>
+              <span id="last-updated" class="typhoon-last-updated">上次刷新 —</span>
+              <button id="refresh-typhoons" class="icon-button" type="button" title="立即刷新">⟳</button>
+            </div>
+          </div>
+
+          <div class="typhoon-grid">
+            <div class="typhoon-map-panel">
+              <div class="typhoon-map-frame" id="map-frame">
+                <div id="typhoon-map" role="application" aria-label="西太平洋台风路径地图"></div>
+                <div id="map-loading" class="map-loading">正在连接真实数据源…</div>
+              </div>
+              <div class="typhoon-map__footer">
+                <div class="typhoon-legend">
+                  <span><i class="legend-line legend-line--jma-solid"></i>JMA 实测</span>
+                  <span><i class="legend-line legend-line--jma-dash"></i>JMA 预报</span>
+                  <span><i class="legend-line legend-line--cma-solid"></i>CMA 实测</span>
+                  <span><i class="legend-line legend-line--cma-dash"></i>CMA 预报</span>
+                  <span><i class="legend-line legend-line--cwa-solid"></i>CWA 实测</span>
+                  <span><i class="legend-line legend-line--cwa-dash"></i>CWA 预报</span>
+                  <span><i class="legend-line legend-line--jtwc-solid"></i>JTWC 实测</span>
+                  <span><i class="legend-line legend-line--jtwc-dash"></i>JTWC 预报</span>
+                  <span><i class="legend-circle"></i>风圈 / 影响范围</span>
+                </div>
+                <p>底图 © OpenStreetMap 贡献者 · 坐标 WGS84</p>
+              </div>
+            </div>
+
+            <aside class="source-panel" aria-labelledby="source-panel-title">
+              <div class="source-panel__head">
+                <div>
+                  <p class="page-heading__issue">SOURCE COMPARE</p>
+                  <h2 id="source-panel-title">多源对比</h2>
+                </div>
+                <span class="stamp" aria-hidden="true">梓</span>
+              </div>
+              <div id="source-cards" class="source-cards" aria-live="polite">
+                <p class="source-cards__empty">正在拉取 JMA + CMA + CWA + JTWC 数据…</p>
+              </div>
+              <p class="source-panel__foot">实线为观测路径，虚线为预报外推；半透明圆圈为各机构发布的 7 级/强风圈、10 级/暴风圈与 JTWC 风圈影响范围。数据源不可用时会自动回退到本地演示路径。</p>
+            </aside>
+          </div>
+
+          <div class="compare-note">
+            <span class="tag">COMPARE</span>
+            <p>同一时刻，不同机构对中心位置、气压与强度会有轻微差异；地图叠加四个机构的路径，便于直接观察分歧。</p>
+          </div>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module" src="/src/pages/typhoon.ts"></script>
+  </body>
+</html>
+

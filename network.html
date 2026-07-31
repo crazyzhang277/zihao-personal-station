@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="测量 GitHub、Cloudflare 与 Open-Meteo 的延迟，并读取浏览器连接信息。" />
+    <title>网络探针 / 张梓皓个人观测站</title>
+  </head>
+  <body data-page="network">
+    <div class="page-shell">
+      <div id="site-header"></div>
+      <main id="main-content">
+        <header class="page-heading">
+          <div>
+            <p class="page-heading__issue">ISSUE 04 / 网络探针</p>
+            <h1>网络观测站</h1>
+          </div>
+          <p class="page-heading__note">读取浏览器连接信息，并用 fetch 测量真实端点延迟。</p>
+        </header>
+
+        <section class="probe-layout">
+          <div class="probe-main">
+            <div class="probe-banner">
+              <p class="probe-banner__kicker">PROBE / 网络延迟</p>
+              <h2>开始网络探测</h2>
+              <p>测量多个 CORS 友好端点，并记录最近 12 次延迟。</p>
+              <button id="probe-button" class="primary-button" type="button">开始探测</button>
+              <p id="probe-status" class="probe-status" aria-live="polite">尚未开始探测</p>
+            </div>
+
+            <div class="probe-results" aria-labelledby="probe-results-title">
+              <div class="section-heading">
+                <h2 id="probe-results-title">探测结果</h2>
+                <p id="probe-latest-time" class="source-line">NO SESSION</p>
+              </div>
+              <div id="result-list" class="result-list">
+                <p class="result-empty">点击开始探测，测量当前网络到多个端点的真实延迟。</p>
+              </div>
+              <div class="history-block">
+                <h3>延迟历史</h3>
+                <div class="chart-wrap">
+                  <svg id="history-chart" viewBox="0 0 600 190" role="img" aria-label="网络延迟历史折线图">
+                    <g id="chart-grid"></g>
+                    <g id="chart-line"></g>
+                    <g id="chart-points"></g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="connection-panel" aria-labelledby="connection-title">
+            <div class="status-panel__head">
+              <div>
+                <p class="page-heading__issue">BROWSER API</p>
+                <h2 id="connection-title">连接信息</h2>
+              </div>
+              <span class="stamp" aria-hidden="true">梓</span>
+            </div>
+            <dl class="status-list">
+              <div><dt>网络类型</dt><dd id="net-effective-type">未知</dd></div>
+              <div><dt>下载速率</dt><dd id="net-downlink">—</dd></div>
+              <div><dt>往返延迟</dt><dd id="net-rtt">—</dd></div>
+              <div><dt>省流量模式</dt><dd id="net-save-data">—</dd></div>
+            </dl>
+            <p class="status-panel__foot" id="connection-note">当前浏览器未提供 navigator.connection，可手动探测延迟。</p>
+          </aside>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module" src="/src/pages/network.ts"></script>
+  </body>
+</html>

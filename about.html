@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="关于张梓皓：个人简介、技术兴趣与联系方式。" />
+    <title>关于 / 张梓皓个人观测站</title>
+  </head>
+  <body data-page="about">
+    <div class="page-shell">
+      <div id="site-header"></div>
+      <main id="main-content">
+        <header class="page-heading page-heading--about">
+          <div>
+            <p class="page-heading__issue">ISSUE 06 / 关于</p>
+            <h1>关于</h1>
+          </div>
+          <p class="page-heading__note">这里的内容都可以在 <code>src/data/content.ts</code> 中直接编辑。</p>
+        </header>
+
+        <section class="about-layout">
+          <div class="about-portrait" aria-hidden="true">
+            <span class="stamp stamp--large">梓</span>
+            <p>ZHANG ZIHAO</p>
+            <p>OBSERVER / BUILDER / TINKERER</p>
+          </div>
+          <article class="about-copy">
+            <p class="about-copy__lead" id="about-bio"></p>
+            <h2>个人简介</h2>
+            <ul class="interest-list" id="interest-list"></ul>
+            <h2>技术兴趣</h2>
+            <ul class="contact-list" id="contact-list"></ul>
+          </article>
+        </section>
+
+        <section class="about-statement" aria-labelledby="statement-title">
+          <p class="about-statement__kicker">OBSERVATION NOTE / 观测手记</p>
+          <h2 id="statement-title">观测手记</h2>
+          <p id="about-quote"></p>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module" src="/src/pages/about.ts"></script>
+  </body>
+</html>
