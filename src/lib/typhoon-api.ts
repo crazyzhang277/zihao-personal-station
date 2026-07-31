@@ -676,10 +676,8 @@ function jtwcCourseLabel(degrees: string): string {
   return directions[Math.round(value / 22.5) % 16] ?? "—";
 }
 
-function fetchJtwcSnapshots(): Promise<TyphoonSnapshot[]> {
-  return fetchText(JTWC_BULLETIN_URL, undefined, 8000)
-    .catch(() => fetchText(JTWC_DIRECT_URL, undefined, 8000))
-    .then((text) => {
+function parseJtwcBulletin(text: string): TyphoonSnapshot[] {
+  try {
       const normalized = text.replace(/\r\n/g, "\n");
       const subject = /SUBJ\/(.+?)\s+WARNING NR\s*(\d+)\s*\/\//i.exec(normalized)
         ?? /SUPER TYPHOON\s+(\d+\w?)\s*\(([^)]+)\)\s*WARNING NR\s*(\d+)/i.exec(normalized);
@@ -739,8 +737,25 @@ function fetchJtwcSnapshots(): Promise<TyphoonSnapshot[]> {
         points: [latest, ...forecast],
       };
       return [{ track, status: buildStatus(track) }];
-    })
-    .catch(() => []);
+    } catch {
+      return [];
+    }
+}
+
+async function fetchJtwcSnapshots(): Promise<TyphoonSnapshot[]> {
+  const candidates = [
+    JTWC_BULLETIN_URL,
+    JTWC_DIRECT_URL,
+    `${CWA_JINA_READER_URL}${encodeURIComponent(JTWC_DIRECT_URL)}`,
+  ];
+  const results = await Promise.allSettled(candidates.map((url) => fetchText(url, undefined, 5000)));
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      const snapshots = parseJtwcBulletin(result.value);
+      if (snapshots.length > 0) return snapshots;
+    }
+  }
+  return [];
 }
 
 async function fetchCwaSnapshots(): Promise<TyphoonSnapshot[]> {
