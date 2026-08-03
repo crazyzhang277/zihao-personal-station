@@ -2,14 +2,14 @@
   <img src="docs/preview.png" alt="台风多源雷达预览" width="720" />
 </p>
 
-<h1 align="center">ZHANG ZIHAO · Personal Station</h1>
+<h1 align="center">WEST PACIFIC OBSERVATION · Personal Station</h1>
 
 <p align="center">
   <b>个人极客观测站</b> — 把天气、网络与真实世界的信号，整理成可读的界面。
 </p>
 
 <p align="center">
-  <a href="https://crazyzhang277.github.io/zihao-personal-station/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
+  <a href="https://crazyzhang277.github.io/west-pacific-station/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
   <img src="https://img.shields.io/badge/Data-IBTrACS%20v04r01-2ea44f?style=flat-square" alt="Data" />
   <img src="https://img.shields.io/badge/Storms-1446%20(1980%E2%80%932024)-8f1d14?style=flat-square" alt="Storms" />
   <img src="https://img.shields.io/badge/Tests-6%20passing-3f7c65?style=flat-square" alt="Tests" />
@@ -116,4 +116,4 @@ npm ci → npm run build → deploy-pages
 
 ## 📄 License
 
-[MIT](LICENSE) © 2026 张梓皓 (ZHANG ZIHAO)
+[MIT](LICENSE) © 2026 西太平洋观测站 (WEST PACIFIC OBSERVATION)

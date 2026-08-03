@@ -14,7 +14,7 @@ const NAV_ITEMS = [
     ],
   },
   { id: "lab", label: "实验", href: "lab.html", aria: "实验与工具" },
-  { id: "about", label: "关于", href: "about.html", aria: "关于张梓皓" },
+  { id: "about", label: "关于", href: "about.html", aria: "关于西太平洋观测站" },
 ] as const;
 
 function escapeHtml(value: string): string {
@@ -33,11 +33,11 @@ function escapeHtml(value: string): string {
 function renderMasthead(): string {
   return `
     <header class="masthead">
-      <a class="masthead__brand" href="index.html" aria-label="回到张梓皓个人观测站首页">
-        <span class="stamp masthead__stamp" aria-hidden="true">梓</span>
+      <a class="masthead__brand" href="index.html" aria-label="回到西太平洋观测站首页">
+        <span class="stamp masthead__stamp" aria-hidden="true">观</span>
         <span class="masthead__title">
-          <strong>张梓皓</strong>
-          <span>ZHANG ZIHAO</span>
+          <strong>西太平洋观测站</strong>
+          <span>WEST PACIFIC OBSERVATION</span>
         </span>
         <span class="masthead__divider" aria-hidden="true"></span>
         <span class="masthead__station">PERSONAL STATION / 个人观测站</span>
@@ -96,9 +96,9 @@ function renderFooter(current: PageId): string {
     <footer class="site-footer">
       <div class="site-footer__main">
         <div class="site-footer__brand">
-          <span class="stamp" aria-hidden="true">梓</span>
+          <span class="stamp" aria-hidden="true">观</span>
           <div>
-            <strong>张梓皓 / ZHANG ZIHAO</strong>
+            <strong>西太平洋观测站 / WEST PACIFIC OBSERVATION</strong>
             <p>个人观测站 / 数字工具与实验</p>
           </div>
         </div>
@@ -112,7 +112,7 @@ function renderFooter(current: PageId): string {
         </div>
       </div>
       <div class="site-footer__meta">
-        <span>© 2026 张梓皓</span>
+        <span>© 2026 西太平洋观测站</span>
         <span>VOL. 01 — 2026 / ISSUE ${currentIssue(current)}</span>
       </div>
     </footer>

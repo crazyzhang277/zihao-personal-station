@@ -1,4 +1,4 @@
-﻿# 张梓皓个人观测站 设计规格
+﻿# 西太平洋观测站 设计规格
 
 > 状态：已确认（2026-07-31）
 > 定位：一个集实时观测、工具实验与个人展示于一体的模块化控制台网站。
@@ -12,7 +12,7 @@
 - **纸感编辑控制台**：暖纸色背景、墨色文字、朱红点缀、细线分割。
 - 主色：纸面 `#F4F0E8`，墨色 `#17140F`，次级灰 `#6D675B`，朱红 `#A63C2B`。
 - 展示字体：`Georgia / Times New Roman / Songti SC` 衬线字体；正文：`Avenir Next / Segoe UI / PingFang SC / Microsoft YaHei`；数据与标签：等宽字体。
-- 记忆点：每页使用期刊式报头「张梓皓 / ZHANG ZIHAO / PERSONAL STATION / VOL. 01 — 2026」、红色「梓」字印章、页眉期号标签与发丝线。
+- 记忆点：每页使用期刊式报头「西太平洋观测站 / WEST PACIFIC OBSERVATION / PERSONAL STATION / VOL. 01 — 2026」、红色「观」字印章、页眉期号标签与发丝线。
 - 动效克制：页面载入轻微显现、卡片悬停微反馈；尊重 `prefers-reduced-motion`。
 
 ## 3. 信息架构

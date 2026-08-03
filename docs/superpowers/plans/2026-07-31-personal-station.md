@@ -1,4 +1,4 @@
-﻿# 张梓皓个人观测站 Implementation Plan
+﻿# 西太平洋观测站 Implementation Plan
 
 > **For agentic workers:** 本计划面向执行者；步骤使用 `- [ ]` 跟踪。当前用户未要求 git commit，执行时不要提交。
 
@@ -10,10 +10,10 @@
 
 ## Global Constraints
 
-- 用户姓名：张梓皓；站点定位：个人观测站。
+- 站点定位：个人观测站；品牌名：西太平洋观测站（WEST PACIFIC OBSERVATION）。
 - 调色板：纸面 `#F4F0E8`、墨色 `#17140F`、次级灰 `#6D675B`、朱红 `#A63C2B`。
 - 展示字体：`Georgia / Times New Roman / Songti SC`；正文：`Avenir Next / Segoe UI / PingFang SC / Microsoft YaHei`；数据：等宽字体。
-- 每个页面必须有期刊式报头与「梓」印章；二级菜单桌面下拉、移动可折叠，支持键盘。
+- 每个页面必须有期刊式报头与「观」印章；二级菜单桌面下拉、移动可折叠，支持键盘。
 - 文案为真实中文，不使用 Lorem ipsum；外部请求失败时显示降级数据，不允许白屏。
 - Windows 下 npm 使用 `npm.cmd`。
 - 不提交 git、不创建分支、不修改 `.superpowers/` 或 `docs/superpowers/specs/`。
@@ -51,7 +51,7 @@
 - Consumes: `src/styles/tokens.css`
 - Produces: `renderLayout(active: string): void`，`initNavigation(): void`；导航项包含 `overview / typhoon / weather / network / lab / about`。
 
-- [ ] 1. 实现共享页头：报头、期号、站点名、红「梓」印章、二级导航。
+- [ ] 1. 实现共享页头：报头、期号、站点名、红「观」印章、二级导航。
 - [ ] 2. 实现 `initNavigation`：桌面 hover/click 下拉、移动 hamburger、`aria-expanded`、焦点可见。
 - [ ] 3. 实现页脚：期刊版权行与功能索引。
 - [ ] 4. 运行 `npm.cmd run build` 并确认无 TS 错误。
