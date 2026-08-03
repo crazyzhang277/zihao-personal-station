@@ -12,3 +12,4 @@ cdp-result.txt
 chrome-dump.txt
 typhoon-verify.png
 dom-dump*.txt
+.tmp-test/

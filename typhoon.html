@@ -22,12 +22,34 @@
           <div class="typhoon-toolbar">
             <div>
               <p class="page-heading__issue">LIVE FEED</p>
-              <h2 id="typhoon-live-title">实时台风对比</h2>
+              <h2 id="typhoon-live-title">台风路径观测</h2>
             </div>
             <div class="typhoon-toolbar__meta">
               <span id="data-badge" class="typhoon-data-badge typhoon-data-badge--loading">连接中</span>
               <span id="last-updated" class="typhoon-last-updated">上次刷新 —</span>
               <button id="refresh-typhoons" class="icon-button" type="button" title="立即刷新">⟳</button>
+            </div>
+          </div>
+
+          <div class="typhoon-modebar" aria-label="台风数据模式">
+            <div class="typhoon-mode-switch" role="group" aria-label="切换实时或历史台风">
+              <button class="typhoon-mode-switch__button is-active" type="button" data-typhoon-mode="live" aria-pressed="true">
+                <span>LIVE</span>实时台风
+              </button>
+              <button class="typhoon-mode-switch__button" type="button" data-typhoon-mode="history" aria-pressed="false">
+                <span>ARCHIVE</span>历史台风
+              </button>
+            </div>
+            <div id="history-filters" class="history-filters" hidden>
+              <label>
+                <span>年份</span>
+                <select id="history-year" aria-label="历史台风年份"><option value="">全部年份</option></select>
+              </label>
+              <label class="history-search">
+                <span>查找档案</span>
+                <input id="history-search" type="search" placeholder="中文名 / 英文名 / 编号" autocomplete="off" />
+              </label>
+              <span id="history-count" class="history-count" aria-live="polite">—</span>
             </div>
           </div>
 
@@ -39,15 +61,23 @@
               </div>
               <div class="typhoon-map__footer">
                 <div class="typhoon-legend">
-                  <span><i class="legend-line legend-line--jma-solid"></i>JMA 实测</span>
-                  <span><i class="legend-line legend-line--jma-dash"></i>JMA 预报</span>
-                  <span><i class="legend-line legend-line--cma-solid"></i>CMA 实测</span>
-                  <span><i class="legend-line legend-line--cma-dash"></i>CMA 预报</span>
-                  <span><i class="legend-line legend-line--cwa-solid"></i>CWA 实测</span>
-                  <span><i class="legend-line legend-line--cwa-dash"></i>CWA 预报</span>
-                  <span><i class="legend-line legend-line--jtwc-solid"></i>JTWC 实测</span>
-                  <span><i class="legend-line legend-line--jtwc-dash"></i>JTWC 预报</span>
-                  <span><i class="legend-circle"></i>风圈 / 影响范围</span>
+                  <div id="live-legend" class="typhoon-legend__group">
+                    <span><i class="legend-line legend-line--jma-solid"></i>JMA 实测</span>
+                    <span><i class="legend-line legend-line--jma-dash"></i>JMA 预报</span>
+                    <span><i class="legend-line legend-line--cma-solid"></i>CMA 实测</span>
+                    <span><i class="legend-line legend-line--cma-dash"></i>CMA 预报</span>
+                    <span><i class="legend-line legend-line--cwa-solid"></i>CWA 实测</span>
+                    <span><i class="legend-line legend-line--cwa-dash"></i>CWA 预报</span>
+                    <span><i class="legend-line legend-line--jtwc-solid"></i>JTWC 实测</span>
+                    <span><i class="legend-line legend-line--jtwc-dash"></i>JTWC 预报</span>
+                    <span><i class="legend-circle"></i>风圈 / 影响范围</span>
+                  </div>
+                  <div id="history-legend" class="typhoon-legend__group history-legend" hidden>
+                    <span><i style="--legend-color:#52758a"></i>热带低压</span>
+                    <span><i style="--legend-color:#3f7c65"></i>热带风暴</span>
+                    <span><i style="--legend-color:#d37828"></i>台风</span>
+                    <span><i style="--legend-color:#8f1d14"></i>超强台风</span>
+                  </div>
                 </div>
                 <p>底图 © OpenStreetMap 贡献者 · 坐标 WGS84</p>
               </div>
@@ -64,7 +94,11 @@
               <div id="source-cards" class="source-cards" aria-live="polite">
                 <p class="source-cards__empty">正在拉取 JMA + CMA + CWA + JTWC 数据…</p>
               </div>
-              <p class="source-panel__foot">实线为观测路径，虚线为预报外推；半透明圆圈为各机构发布的 7 级/强风圈、10 级/暴风圈与 JTWC 风圈影响范围。数据源不可用时会自动回退到本地演示路径。</p>
+              <div id="history-panel" class="history-panel" hidden>
+                <div id="history-results" class="history-results" aria-live="polite"></div>
+                <article id="history-detail" class="history-detail" hidden></article>
+              </div>
+              <p id="source-panel-foot" class="source-panel__foot">实线为观测路径，虚线为预报外推；半透明圆圈为各机构发布的 7 级/强风圈、10 级/暴风圈与 JTWC 风圈影响范围。数据源不可用时会自动回退到本地演示路径。</p>
             </aside>
           </div>
 

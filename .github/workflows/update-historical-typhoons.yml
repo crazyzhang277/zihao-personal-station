@@ -1,0 +1,42 @@
+name: update-historical-typhoons
+
+on:
+  schedule:
+    - cron: "0 3 1 * *"
+  workflow_dispatch:
+
+concurrency:
+  group: historical-typhoons-update
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Refresh IBTrACS archive
+        run: npm run update:typhoons
+      - name: Verify tests
+        run: npm test -- --test-reporter=spec
+      - name: Build site
+        run: npm run build
+      - name: Commit refreshed data
+        run: |
+          if [[ -n "$(git status --porcelain public/data/typhoons)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add public/data/typhoons
+            git commit -m "data: refresh IBTrACS Western Pacific best-track archive"
+            git push
+          else
+            echo "Archive unchanged; skipping commit."
+          fi

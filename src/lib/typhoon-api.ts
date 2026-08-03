@@ -506,7 +506,11 @@ function parseCwaMarkdown(text: string): TyphoonTrack | null {
       mode = "forecast";
       continue;
     }
-    if (line.startsWith("#past-track") || line.startsWith("#pta")) {
+    if (line.startsWith("#past-track")) {
+      continue;
+    }
+    if (line.startsWith("#pta")) {
+      mode = "idle";
       continue;
     }
     if (line.startsWith("#current")) {
