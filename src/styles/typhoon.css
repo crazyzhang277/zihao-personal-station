@@ -87,7 +87,10 @@
 
 .history-filters[hidden],
 .history-panel[hidden],
-.typhoon-legend__group[hidden] {
+.typhoon-legend__group[hidden],
+.source-cards[hidden],
+.icon-button[hidden],
+.typhoon-data-badge[hidden] {
   display: none;
 }
 
