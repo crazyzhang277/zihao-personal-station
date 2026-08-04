@@ -1,0 +1,103 @@
+﻿.latency-stats {
+  margin-bottom: 2rem;
+}
+
+.latency-chart-section {
+  margin-bottom: 2rem;
+}
+
+.chart-container {
+  padding: 1.25rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  overflow-x: auto;
+}
+
+.latency-svg {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chart-grid-line {
+  stroke: var(--hairline-soft);
+  stroke-width: 1;
+}
+
+.chart-line {
+  stroke-width: 2;
+  fill: none;
+}
+
+.chart-point {
+  transition: r 120ms ease;
+}
+
+.chart-point:hover {
+  r: 5;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.latency-samples {
+  margin-bottom: 2rem;
+}
+
+.sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}
+
+.sample-table th,
+.sample-table td {
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.sample-table th {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.sample-table__time {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.sample-table__endpoint {
+  font-weight: 600;
+}
+
+.sample-table__latency {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .chart-legend {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}

@@ -5,7 +5,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 import { defineConfig } from "vite";
 
 const root = resolve(__dirname);
-const page = (name: string) => resolve(root, `${name}.html`);
+const page = (name: string) => resolve(root, name + ".html");
 
 const cwaProxy = {
   "/cwa-proxy": {
@@ -34,8 +34,9 @@ export default defineConfig({
         network: page("network"),
         lab: page("lab"),
         about: page("about"),
+        "weather-log": page("weather-log"),
+        "latency-viz": page("latency-viz"),
       },
     },
   },
 });
-

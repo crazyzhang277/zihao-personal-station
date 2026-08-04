@@ -1,0 +1,36 @@
+﻿/* 修复移动端二级菜单背景透明问题 */
+.submenu {
+  background: var(--paper-raised);
+}
+
+@media (min-width: 720px) {
+  /* 子菜单与父菜单紧密连接 */
+  .submenu {
+    background: var(--paper-raised);
+    top: calc(100% - 0.5rem);
+    padding: 0.5rem 0 0.5rem 0;
+    z-index: 10;
+  }
+
+  /* 悬停区域扩展：整个菜单组保持悬停状态 */
+  .nav-item--group {
+    position: relative;
+  }
+
+  /* 伪元素填补按钮和子菜单之间的视觉间隙，让悬停区域连续 */
+  .nav-item--group::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 0;
+    z-index: 5;
+    pointer-events: auto;
+  }
+
+  /* 子菜单在悬停时保持 */
+  .nav-item--group:hover .submenu {
+    display: block;
+  }
+}

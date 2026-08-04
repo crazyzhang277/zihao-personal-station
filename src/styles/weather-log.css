@@ -1,0 +1,190 @@
+﻿.log-stats {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-item__label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.stat-item__value {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.log-actions {
+  margin-bottom: 2rem;
+}
+
+.today-card {
+  padding: 1.5rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+}
+
+.today-card__status {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.today-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.today-card__weather {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.today-weather__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.today-weather__label {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.today-weather__value {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.today-card__note {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.today-card__note label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.today-card__note input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  font-size: 0.95rem;
+  transition: border-color 150ms ease;
+}
+
+.today-card__note input:focus {
+  outline: none;
+  border-color: var(--vermilion);
+}
+
+.log-entries {
+  margin-bottom: 2rem;
+}
+
+.empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--paper-raised);
+  border: 1px dashed var(--hairline);
+}
+
+.empty-state__icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.empty-state__text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state__hint {
+  font-size: 0.86rem;
+  color: var(--muted);
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.log-table th,
+.log-table td {
+  padding: 0.85rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.log-table th {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.log-table__date {
+  font-family: var(--serif);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.log-table__weather {
+  white-space: nowrap;
+}
+
+.log-table__temp {
+  white-space: nowrap;
+}
+
+.log-table__wind {
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.log-table__note {
+  color: var(--muted);
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .log-table th:nth-child(3),
+  .log-table td:nth-child(3),
+  .log-table th:nth-child(4),
+  .log-table td:nth-child(4) {
+    display: none;
+  }
+}

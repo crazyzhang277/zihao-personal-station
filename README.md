@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://crazyzhang277.github.io/west-pacific-station/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
+  <a href="https://crazyzhang277.github.io/zihao-personal-station/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
   <img src="https://img.shields.io/badge/Data-IBTrACS%20v04r01-2ea44f?style=flat-square" alt="Data" />
   <img src="https://img.shields.io/badge/Storms-1446%20(1980%E2%80%932024)-8f1d14?style=flat-square" alt="Storms" />
   <img src="https://img.shields.io/badge/Tests-6%20passing-3f7c65?style=flat-square" alt="Tests" />
@@ -27,6 +27,8 @@
 | 🌊 **风圈 / 影响范围** | 实线观测、虚线预报外推；半透明圆圈呈现各机构发布的 7 级 / 强风圈、10 级 / 暴风圈与 JTWC 风圈影响范围。 |
 | 🌤️ **天气观测站** | Open-Meteo 实时天气，失败自动回退演示数据。 |
 | 📡 **网络观测站** | 读取浏览器连接信息，并用 fetch 测量真实端点延迟。 |
+| 📓 **天气日志** | 自动记录每日天气，生成可翻阅的观测档案。 |
+| 📈 **延迟可视化** | 网络延迟的跨会话历史可视化。 |
 | 🧪 **实验舱** | 换算器与规划中的实验，工具慢慢生长。 |
 
 ## 🛠️ 技术栈
@@ -87,16 +89,16 @@ npm run preview    # 本地预览生产产物
 ```text
 .
 |-- src/
-|   |-- pages/              # 页面入口
+|   |-- pages/              # 页面入口（台风 / 天气 / 网络 / 日志 / 延迟可视化）
 |   |-- lib/                # 台风 / 天气数据解析
 |   |-- data/               # 静态演示数据
 |   `-- styles/             # Paper-console 视觉系统
-|-- scripts/                # 数据生成器（IBTrACS 历史归档）
+|-- scripts/                # 数据生成器（IBTrACS 历史归档）与构建工具
 |-- tests/                  # Node 测试（CSV 解析 / 查询 / 强度 / CWA 回退）
 |-- public/data/typhoons/   # 生成的历史归档（索引 + 年份分片）
 |-- docs/                   # 文档与截图
 |-- .github/workflows/      # Pages 部署 + 月度归档刷新
-|-- *.html                  # Vite 多页入口
+|-- *.html                  # Vite 多页入口（8 个页面）
 `-- package.json
 ```
 

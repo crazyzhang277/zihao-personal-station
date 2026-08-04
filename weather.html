@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="使用 Open-Meteo 获取上海、北京、广州的实时天气与 7 日预报。" />
     <title>天气站 / 西太平洋观测站</title>
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/src/styles/base.css" />
+    <link rel="stylesheet" href="/src/styles/components.css" />
+    <link rel="stylesheet" href="/src/styles/pages.css" />
+    <link rel="stylesheet" href="/src/styles/submenu-fix.css" />
   </head>
   <body data-page="weather">
     <div class="page-shell">
-      <div id="site-header"></div>
+      <div id="site-header">
+      <!-- site-header:start --><header class="masthead"><a class="masthead__brand" href="index.html" aria-label="回到西太平洋观测站首页"><span class="stamp masthead__stamp" aria-hidden="true">观</span><span class="masthead__title"><strong>西太平洋观测站</strong><span>WEST PACIFIC OBSERVATION</span></span><span class="masthead__divider" aria-hidden="true"></span><span class="masthead__station">PERSONAL STATION / 个人观测站</span></a><div class="masthead__right"><p class="masthead__issue">VOL. 01 — 2026</p><button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__line" aria-hidden="true"></span><span class="visually-hidden">打开导航菜单</span></button></div></header><nav id="site-nav" class="site-nav" aria-label="主导航" aria-expanded="false"><ul class="nav-list"><li class="nav-item"><a href="index.html">总览</a></li><li class="nav-item nav-item--group is-active"><button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="observe-submenu"><span>观测</span><span class="nav-chevron" aria-hidden="true">→</span></button><ul class="submenu" id="observe-submenu"><li><a href="typhoon.html">台风雷达</a></li><li><a href="weather.html" aria-current="page">天气站</a></li><li><a href="network.html">网络探针</a></li></ul></li><li class="nav-item"><a href="lab.html">实验</a></li><li class="nav-item"><a href="about.html">关于</a></li></ul><p class="nav-foot">OBSERVATION STATION / VOL. 01 — 2026</p></nav><!-- site-header:end -->
+    </div>
       <main id="main-content">
         <header class="page-heading">
           <div>

@@ -1,14 +1,21 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="台风强度换算工具与正在规划的实验索引。" />
     <title>实验舱 / 西太平洋观测站</title>
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/src/styles/base.css" />
+    <link rel="stylesheet" href="/src/styles/components.css" />
+    <link rel="stylesheet" href="/src/styles/pages.css" />
+    <link rel="stylesheet" href="/src/styles/submenu-fix.css" />
   </head>
   <body data-page="lab">
     <div class="page-shell">
-      <div id="site-header"></div>
+      <div id="site-header">
+      <!-- site-header:start --><header class="masthead"><a class="masthead__brand" href="index.html" aria-label="回到西太平洋观测站首页"><span class="stamp masthead__stamp" aria-hidden="true">观</span><span class="masthead__title"><strong>西太平洋观测站</strong><span>WEST PACIFIC OBSERVATION</span></span><span class="masthead__divider" aria-hidden="true"></span><span class="masthead__station">PERSONAL STATION / 个人观测站</span></a><div class="masthead__right"><p class="masthead__issue">VOL. 01 — 2026</p><button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__line" aria-hidden="true"></span><span class="visually-hidden">打开导航菜单</span></button></div></header><nav id="site-nav" class="site-nav" aria-label="主导航" aria-expanded="false"><ul class="nav-list"><li class="nav-item"><a href="index.html">总览</a></li><li class="nav-item nav-item--group"><button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="observe-submenu"><span>观测</span><span class="nav-chevron" aria-hidden="true">→</span></button><ul class="submenu" id="observe-submenu"><li><a href="typhoon.html">台风雷达</a></li><li><a href="weather.html">天气站</a></li><li><a href="network.html">网络探针</a></li></ul></li><li class="nav-item is-active"><a href="lab.html">实验</a></li><li class="nav-item"><a href="about.html">关于</a></li></ul><p class="nav-foot">OBSERVATION STATION / VOL. 01 — 2026</p></nav><!-- site-header:end -->
+    </div>
       <main id="main-content">
         <header class="page-heading">
           <div>
@@ -22,7 +29,7 @@
           <div class="lab-featured__intro">
             <span class="lab-featured__number">EXPERIMENT 01</span>
             <h2 id="converter-title">台风强度换算</h2>
-            <p>在风速与蒲福风级之间换算，并查看对应的风力等级。</p>
+            <p>在风速与蒲福风级之间换算，并查看对应的台风等级。</p>
           </div>
           <div class="converter" id="converter">
             <div class="converter__field">
@@ -41,8 +48,8 @@
               </div>
             </div>
             <dl class="converter__result">
-              <div><dt>风力等级</dt><dd id="result-level">强风</dd></div>
-              <div><dt>风力描述</dt><dd id="result-desc">大枝摇动</dd></div>
+              <div><dt>风力等级</dt><dd id="result-level">强台风</dd></div>
+              <div><dt>风力描述</dt><dd id="result-desc">大树摇摆</dd></div>
               <div><dt>折算风速</dt><dd id="result-wind">118 km/h</dd></div>
             </dl>
           </div>
@@ -51,19 +58,19 @@
         <section class="lab-list" aria-labelledby="lab-list-title">
           <div class="section-heading">
             <h2 id="lab-list-title">实验索引</h2>
-            <p>正在规划中的小实验，会陆续接入。</p>
+            <p>正在规划与已上线的小实验。</p>
           </div>
           <div class="lab-grid">
-            <article class="lab-card lab-card--planned">
-              <span class="lab-card__status">规划中</span>
+            <a class="lab-card" href="weather-log.html">
+              <span class="lab-card__status">已上线</span>
               <h3>天气日志</h3>
-              <p>自动记录每日天气，并生成可翻阅的观测档案。</p>
-            </article>
-            <article class="lab-card lab-card--planned">
-              <span class="lab-card__status">规划中</span>
+              <p>自动记录每日天气，生成可翻阅的观测档案。</p>
+            </a>
+            <a class="lab-card" href="latency-viz.html">
+              <span class="lab-card__status">已上线</span>
               <h3>延迟可视化</h3>
               <p>把网络探针结果整理成更直观的时空视图。</p>
-            </article>
+            </a>
           </div>
         </section>
       </main>

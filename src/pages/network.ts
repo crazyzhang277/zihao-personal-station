@@ -1,4 +1,4 @@
-import "../main";
+﻿import "../main";
 
 interface NetworkInformationLike {
   effectiveType?: string;
@@ -12,6 +12,41 @@ interface ProbeResult {
   label: string;
   latencyMs: number;
   ok: boolean;
+}
+
+const LATENCY_STORAGE_KEY = "latency-history";
+
+export interface LatencySample {
+  endpoint: string;
+  label: string;
+  latencyMs: number;
+  ok: boolean;
+  timestamp: string;
+}
+
+function loadLatencyHistory(): LatencySample[] {
+  try {
+    const raw = localStorage.getItem(LATENCY_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLatencyHistory(samples: LatencySample[]): void {
+  localStorage.setItem(LATENCY_STORAGE_KEY, JSON.stringify(samples));
+}
+
+export function addLatencySamples(newSamples: LatencySample[]): void {
+  const history = loadLatencyHistory();
+  const updated = [...newSamples, ...history].slice(0, 500);
+  saveLatencyHistory(updated);
+}
+
+export function getLatencyHistory(): LatencySample[] {
+  return loadLatencyHistory();
 }
 
 const ENDPOINTS = [
@@ -46,8 +81,8 @@ function renderConnection(): void {
   } else {
     fields.push(
       ["网络类型", (connection.effectiveType ?? "unknown").toUpperCase()],
-      ["下载速率", connection.downlink != null ? `${connection.downlink} Mb/s` : "—"],
-      ["往返延迟", connection.rtt != null ? `${connection.rtt} ms` : "—"],
+      ["下载速率", connection.downlink != null ? connection.downlink + " Mb/s" : "—"],
+      ["往返延迟", connection.rtt != null ? connection.rtt + " ms" : "—"],
       ["省流量模式", connection.saveData ? "是" : "否"],
     );
     if (note) note.textContent = "连接信息来自浏览器 Network Information API，手动探测会测量真实 RTT。";
@@ -61,18 +96,18 @@ function renderConnection(): void {
 
 function latencyText(ms: number): string {
   if (ms < 1) return "<1 ms";
-  return `${Math.round(ms)} ms`;
+  return Math.round(ms) + " ms";
 }
 
 function renderResults(results: ProbeResult[]): void {
   if (!resultList) return;
   resultList.innerHTML = results
-    .map((result) => `
-      <div class="result-item${result.ok ? "" : " is-failed"}">
-        <span class="result-item__endpoint">${result.label} · ${result.endpoint}</span>
-        <span class="result-item__latency">${result.ok ? latencyText(result.latencyMs) : "失败"}</span>
-      </div>
-    `)
+    .map((result) =>
+      '<div class="result-item' + (result.ok ? "" : " is-failed") + '">' +
+      '<span class="result-item__endpoint">' + result.label + ' · ' + result.endpoint + '</span>' +
+      '<span class="result-item__latency">' + (result.ok ? latencyText(result.latencyMs) : "失败") + '</span>' +
+      '</div>'
+    )
     .join("");
 }
 
@@ -88,7 +123,7 @@ function drawChart(): void {
 
   const gridHtml = [0, 1, 2, 3].map((i) => {
     const y = padding + (plotHeight / 3) * i;
-    return `<line class="chart-grid-line" x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" />`;
+    return '<line class="chart-grid-line" x1="' + padding + '" y1="' + y + '" x2="' + (width - padding) + '" y2="' + y + '" />';
   }).join("");
   chartGrid.innerHTML = gridHtml;
 
@@ -105,10 +140,10 @@ function drawChart(): void {
     y: padding + plotHeight - (Math.min(value, max) / max) * plotHeight,
   }));
 
-  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
-  chartLine.innerHTML = `<path class="chart-line" d="${linePath}" />`;
+  const linePath = points.map((p, i) => (i === 0 ? "M" : "L") + " " + p.x.toFixed(1) + " " + p.y.toFixed(1)).join(" ");
+  chartLine.innerHTML = '<path class="chart-line" d="' + linePath + '" />';
   chartPoints.innerHTML = points
-    .map((p, i) => `<circle class="chart-point" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${i === points.length - 1 ? 4.5 : 3}"><title>${history[i]} ms</title></circle>`)
+    .map((p, i) => '<circle class="chart-point" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + (i === points.length - 1 ? 4.5 : 3) + '"><title>' + history[i] + ' ms</title></circle>')
     .join("");
 }
 
@@ -134,21 +169,38 @@ async function runProbe(): Promise<void> {
   probeButton.disabled = true;
   if (probeStatus) probeStatus.textContent = "正在探测 3 个端点…";
   const results: ProbeResult[] = [];
+  const timestamp = new Date().toISOString();
+  const persistentSamples: LatencySample[] = [];
+
   for (const endpoint of ENDPOINTS) {
     const result = await probeEndpoint(endpoint.endpoint);
     results.push(result);
     renderResults(results);
-    if (result.ok) history.push(Math.round(result.latencyMs));
+    if (result.ok) {
+      history.push(Math.round(result.latencyMs));
+      persistentSamples.push({
+        endpoint: result.endpoint,
+        label: result.label,
+        latencyMs: Math.round(result.latencyMs),
+        ok: true,
+        timestamp,
+      });
+    }
   }
+
+  if (persistentSamples.length > 0) {
+    addLatencySamples(persistentSamples);
+  }
+
   if (history.length > MAX_HISTORY) history.splice(0, history.length - MAX_HISTORY);
   drawChart();
   if (latestTime) {
     const time = new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date());
-    latestTime.textContent = `SESSION / ${time}`;
+    latestTime.textContent = "SESSION / " + time;
   }
   if (probeStatus) {
     const okCount = results.filter((result) => result.ok).length;
-    probeStatus.textContent = `探测完成：${okCount}/${results.length} 个端点成功，已记录 ${history.length} 个延迟样本。`;
+    probeStatus.textContent = "探测完成，" + okCount + "/" + results.length + " 个端点成功，已记录 " + history.length + " 个延迟样本。";
   }
   probeButton.disabled = false;
 }

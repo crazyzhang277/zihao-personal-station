@@ -8,6 +8,7 @@ Thumbs.db
 .idea/
 
 # Local debug artifacts
+.dev-pid
 cdp-result.txt
 chrome-dump.txt
 typhoon-verify.png

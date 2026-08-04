@@ -1,4 +1,4 @@
-export type PageId = "index" | "typhoon" | "weather" | "network" | "lab" | "about";
+﻿export type PageId = "index" | "typhoon" | "weather" | "network" | "lab" | "about";
 
 const NAV_ITEMS = [
   { id: "index", label: "总览", href: "index.html", aria: "返回总览" },
@@ -30,93 +30,83 @@ function escapeHtml(value: string): string {
   });
 }
 
-function renderMasthead(): string {
-  return `
-    <header class="masthead">
-      <a class="masthead__brand" href="index.html" aria-label="回到西太平洋观测站首页">
-        <span class="stamp masthead__stamp" aria-hidden="true">观</span>
-        <span class="masthead__title">
-          <strong>西太平洋观测站</strong>
-          <span>WEST PACIFIC OBSERVATION</span>
-        </span>
-        <span class="masthead__divider" aria-hidden="true"></span>
-        <span class="masthead__station">PERSONAL STATION / 个人观测站</span>
-      </a>
-      <div class="masthead__right">
-        <p class="masthead__issue">VOL. 01 — 2026</p>
-        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-          <span class="nav-toggle__line" aria-hidden="true"></span>
-          <span class="visually-hidden">打开导航菜单</span>
-        </button>
-      </div>
-    </header>
-  `;
+export function renderMasthead(): string {
+  return '<header class="masthead">' +
+    '<a class="masthead__brand" href="index.html" aria-label="回到西太平洋观测站首页">' +
+    '<span class="stamp masthead__stamp" aria-hidden="true">观</span>' +
+    '<span class="masthead__title">' +
+    '<strong>西太平洋观测站</strong>' +
+    '<span>WEST PACIFIC OBSERVATION</span>' +
+    '</span>' +
+    '<span class="masthead__divider" aria-hidden="true"></span>' +
+    '<span class="masthead__station">PERSONAL STATION / 个人观测站</span>' +
+    '</a>' +
+    '<div class="masthead__right">' +
+    '<p class="masthead__issue">VOL. 01 — 2026</p>' +
+    '<button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">' +
+    '<span class="nav-toggle__line" aria-hidden="true"></span>' +
+    '<span class="visually-hidden">打开导航菜单</span>' +
+    '</button>' +
+    '</div>' +
+    '</header>';
 }
 
-function renderNav(current: PageId): string {
+export function renderNav(current: PageId): string {
   const topItems = NAV_ITEMS.map((item) => {
     if ("children" in item) {
       const childLinks = item.children
         .map((child) => {
-          const active = child.id === current ? " aria-current=\"page\"" : "";
-          return `<li><a href="${child.href}"${active}>${escapeHtml(child.label)}</a></li>`;
+          const active = child.id === current ? ' aria-current="page"' : "";
+          return '<li><a href="' + child.href + '"' + active + '>' + escapeHtml(child.label) + '</a></li>';
         })
         .join("");
       const activeClass = item.children.some((child) => child.id === current) ? " is-active" : "";
-      return `
-        <li class="nav-item nav-item--group${activeClass}">
-          <button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="observe-submenu">
-            <span>${escapeHtml(item.label)}</span><span class="nav-chevron" aria-hidden="true">›</span>
-          </button>
-          <ul class="submenu" id="observe-submenu">
-            ${childLinks}
-          </ul>
-        </li>
-      `;
+      return '<li class="nav-item nav-item--group' + activeClass + '">' +
+        '<button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="observe-submenu">' +
+        '<span>' + escapeHtml(item.label) + '</span><span class="nav-chevron" aria-hidden="true">→</span>' +
+        '</button>' +
+        '<ul class="submenu" id="observe-submenu">' +
+        childLinks +
+        '</ul>' +
+        '</li>';
     }
     const active = item.id === current ? " is-active" : "";
-    return `
-      <li class="nav-item${active}">
-        <a href="${item.href}">${escapeHtml(item.label)}</a>
-      </li>
-    `;
+    return '<li class="nav-item' + active + '">' +
+      '<a href="' + item.href + '">' + escapeHtml(item.label) + '</a>' +
+      '</li>';
   }).join("");
-  return `
-    <nav id="site-nav" class="site-nav" aria-label="主导航" aria-expanded="false">
-      <ul class="nav-list">
-        ${topItems}
-      </ul>
-      <p class="nav-foot">OBSERVATION STATION / VOL. 01 — 2026</p>
-    </nav>
-  `;
+  return '<nav id="site-nav" class="site-nav" aria-label="主导航" aria-expanded="false">' +
+    '<ul class="nav-list">' +
+    topItems +
+    '</ul>' +
+    '<p class="nav-foot">OBSERVATION STATION / VOL. 01 — 2026</p>' +
+    '</nav>';
 }
 
 function renderFooter(current: PageId): string {
-  return `
-    <footer class="site-footer">
-      <div class="site-footer__main">
-        <div class="site-footer__brand">
-          <span class="stamp" aria-hidden="true">观</span>
-          <div>
-            <strong>西太平洋观测站 / WEST PACIFIC OBSERVATION</strong>
-            <p>个人观测站 / 数字工具与实验</p>
-          </div>
-        </div>
-        <div class="site-footer__links" aria-label="功能索引">
-          <a href="index.html">总览</a>
-          <a href="typhoon.html">台风雷达</a>
-          <a href="weather.html">天气站</a>
-          <a href="network.html">网络探针</a>
-          <a href="lab.html">实验舱</a>
-          <a href="about.html">关于</a>
-        </div>
-      </div>
-      <div class="site-footer__meta">
-        <span>© 2026 西太平洋观测站</span>
-        <span>VOL. 01 — 2026 / ISSUE ${currentIssue(current)}</span>
-      </div>
-    </footer>
-  `;
+  return '<footer class="site-footer">' +
+    '<div class="site-footer__main">' +
+    '<div class="site-footer__brand">' +
+    '<span class="stamp" aria-hidden="true">观</span>' +
+    '<div>' +
+    '<strong>西太平洋观测站 / WEST PACIFIC OBSERVATION</strong>' +
+    '<p>个人观测站 / 数字工具与实验</p>' +
+    '</div>' +
+    '</div>' +
+    '<div class="site-footer__links" aria-label="功能索引">' +
+    '<a href="index.html">总览</a>' +
+    '<a href="typhoon.html">台风雷达</a>' +
+    '<a href="weather.html">天气站</a>' +
+    '<a href="network.html">网络探针</a>' +
+    '<a href="lab.html">实验舱</a>' +
+    '<a href="about.html">关于</a>' +
+    '</div>' +
+    '</div>' +
+    '<div class="site-footer__meta">' +
+    '<span>© 2026 西太平洋观测站</span>' +
+    '<span>VOL. 01 — 2026 / ISSUE ' + currentIssue(current) + '</span>' +
+    '</div>' +
+    '</footer>';
 }
 
 function currentIssue(page: PageId): string {
@@ -131,11 +121,12 @@ function currentIssue(page: PageId): string {
   return issues[page];
 }
 
-function initializeMenu(): void {
+﻿function initializeMenu(): void {
   const toggle = document.getElementById("nav-toggle");
   const nav = document.getElementById("site-nav");
   const groupToggle = document.querySelector<HTMLButtonElement>(".nav-group-toggle");
   const submenu = document.getElementById("observe-submenu");
+  const group = document.querySelector<HTMLElement>(".nav-item--group");
 
   if (!toggle || !nav) return;
 
@@ -154,13 +145,35 @@ function initializeMenu(): void {
     document.body.classList.toggle("nav-open", expanded);
   };
 
+  // 桌面端：实时根据鼠标位置决定子菜单显隐，彻底避免 mouseenter/mouseleave 边界缝隙
+  const isDesktop = window.matchMedia("(min-width: 720px)").matches;
+  if (isDesktop && group && submenu) {
+    const updateByPointer = (clientX: number, clientY: number): void => {
+      const groupRect = group.getBoundingClientRect();
+      const submenuRect = submenu.getBoundingClientRect();
+      const inGroup =
+        clientX >= groupRect.left && clientX <= groupRect.right &&
+        clientY >= groupRect.top && clientY <= groupRect.bottom;
+      const inSubmenu =
+        submenuRect.width > 0 &&
+        clientX >= submenuRect.left && clientX <= submenuRect.right &&
+        clientY >= submenuRect.top && clientY <= submenuRect.bottom;
+      setSubmenu(inGroup || inSubmenu);
+    };
+    document.addEventListener("mousemove", (event) => updateByPointer(event.clientX, event.clientY));
+    group.addEventListener("mouseleave", (event) => updateByPointer(event.clientX, event.clientY));
+  }
+
   toggle.addEventListener("click", () => setExpanded(toggle.getAttribute("aria-expanded") !== "true"));
   nav.addEventListener("click", (event) => {
     if ((event.target as HTMLElement).closest("a")) setExpanded(false);
   });
 
   if (groupToggle && submenu) {
-    groupToggle.addEventListener("click", () => setSubmenu(groupToggle.getAttribute("aria-expanded") !== "true"));
+    groupToggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setSubmenu(groupToggle.getAttribute("aria-expanded") !== "true");
+    });
   }
 
   document.addEventListener("keydown", (event) => {
@@ -170,6 +183,7 @@ function initializeMenu(): void {
     }
   });
 }
+
 
 export function initNavigation(): void {
   const body = document.body;
