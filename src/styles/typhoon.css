@@ -709,3 +709,24 @@
   }
 }
 
+
+/* Data source offline / degraded card */
+.source-card--offline {
+  border-style: dashed;
+  border-top-style: solid;
+  opacity: 0.85;
+  background: repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.015) 0 10px,
+      rgba(0, 0, 0, 0) 10px 20px
+    ),
+    var(--paper);
+}
+
+.source-card--offline .source-card__state {
+  color: var(--muted);
+}
+
+.source-card--offline .source-card__number {
+  color: var(--muted);
+}

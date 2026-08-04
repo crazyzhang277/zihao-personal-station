@@ -880,15 +880,37 @@ function demoSnapshots(): TyphoonSnapshot[] {
   });
 }
 
+export interface TyphoonSnapshotDetail {
+  snapshots: TyphoonSnapshot[];
+  unavailable: TyphoonSourceId[];
+}
+
 export async function fetchTyphoonSnapshots(): Promise<TyphoonSnapshot[]> {
+  return (await fetchTyphoonSnapshotsDetail()).snapshots;
+}
+
+export async function fetchTyphoonSnapshotsDetail(): Promise<TyphoonSnapshotDetail> {
+  const unavailable: TyphoonSourceId[] = [];
   const [jma, cma, cwa, jtwc] = await Promise.all([
-    fetchJmaSnapshots().catch(() => []),
-    fetchCmaSnapshots().catch(() => []),
-    fetchCwaSnapshots().catch(() => []),
-    fetchJtwcSnapshots().catch(() => []),
+    fetchJmaSnapshots().catch(() => {
+      unavailable.push("jma");
+      return [];
+    }),
+    fetchCmaSnapshots().catch(() => {
+      unavailable.push("cma");
+      return [];
+    }),
+    fetchCwaSnapshots().catch(() => {
+      unavailable.push("cwa");
+      return [];
+    }),
+    fetchJtwcSnapshots().catch(() => {
+      unavailable.push("jtwc");
+      return [];
+    }),
   ]);
   const live = [...jma, ...cma, ...cwa, ...jtwc];
-  return live.length > 0 ? live : demoSnapshots();
+  return { snapshots: live.length > 0 ? live : demoSnapshots(), unavailable };
 }
 
 export { positionLabel };

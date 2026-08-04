@@ -12,10 +12,11 @@ import {
   type HistoricalStormSummary,
 } from "../lib/historical-typhoons";
 import {
-  fetchTyphoonSnapshots,
+  fetchTyphoonSnapshotsDetail,
   formatTime,
   intensityLabels,
   type TyphoonSnapshot,
+  type TyphoonSnapshotDetail,
   type TyphoonSourceId,
   type TyphoonStatus,
   type TyphoonTrack,
@@ -41,11 +42,34 @@ const map = L.map("typhoon-map", {
 }).setView([22, 150], 4);
 
 L.control.zoom({ position: "topright" }).addTo(map);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+
+const amapLayer = L.tileLayer("https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}", {
+  attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+  maxZoom: 18,
+  subdomains: "1234",
+});
+const osmLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
   subdomains: "abc",
-}).addTo(map);
+});
+amapLayer.addTo(map);
+
+let baseTileErrors = 0;
+let baseErrorWindow: number | null = null;
+amapLayer.on("tileerror", () => {
+  baseTileErrors += 1;
+  if (baseErrorWindow === null) {
+    baseErrorWindow = window.setTimeout(() => {
+      baseErrorWindow = null;
+      if (baseTileErrors >= 3) {
+        map.removeLayer(amapLayer);
+        osmLayer.addTo(map);
+      }
+      baseTileErrors = 0;
+    }, 5000);
+  }
+});
 
 const layers: Record<TyphoonSourceId, L.LayerGroup> = {
   jma: L.layerGroup().addTo(map),
@@ -74,6 +98,7 @@ const historyLegend = document.getElementById("history-legend");
 const sourcePanelFoot = document.getElementById("source-panel-foot");
 
 let snapshots: TyphoonSnapshot[] = [];
+let unavailableSources: TyphoonSourceId[] = [];
 let refreshing = false;
 let mode: TyphoonMode = "live";
 let refreshTimer: number | null = null;
@@ -216,8 +241,9 @@ function renderTrack(track: TyphoonTrack): void {
   });
 }
 
-function renderSnapshots(next: TyphoonSnapshot[]): void {
-  snapshots = next;
+function renderSnapshots(next: TyphoonSnapshotDetail): void {
+  snapshots = next.snapshots;
+  unavailableSources = next.unavailable;
   Object.values(layers).forEach((group) => group.clearLayers());
   snapshots.forEach((snapshot) => renderTrack(snapshot.track));
   renderSourceCards();
@@ -439,11 +465,25 @@ function renderBadge(): void {
 
 function renderSourceCards(): void {
   if (!sourceCards) return;
-  if (snapshots.length === 0) {
+  if (snapshots.length === 0 && unavailableSources.length === 0) {
     sourceCards.innerHTML = '<p class="source-cards__empty">暂无可用数据，请稍后重试。</p>';
     return;
   }
-  sourceCards.innerHTML = snapshots.map(sourceCardMarkup).join("");
+  const offlineMarkup = unavailableSources.map(sourceUnavailableMarkup).join("");
+  sourceCards.innerHTML = snapshots.map(sourceCardMarkup).join("") + offlineMarkup;
+}
+
+const sourceFullNames: Record<TyphoonSourceId, string> = {
+  jma: "JMA 日本气象厅",
+  cma: "CMA 中央气象台",
+  cwa: "CWA 台湾中央气象署",
+  jtwc: "JTWC 联合台风警报中心",
+  demo: "DEMO 演示数据",
+};
+
+function sourceUnavailableMarkup(sourceId: TyphoonSourceId): string {
+  const theme = sourceTheme[sourceId];
+  return '\n    <article class="source-card source-card--' + sourceId + ' source-card--offline">\n      <header class="source-card__head">\n        <span class="source-card__id" style="--source-color: ' + theme.color + '">' + theme.badge + '</span>\n        <span class="source-card__state">OFFLINE</span>\n      </header>\n      <h3>' + sourceFullNames[sourceId] + '</h3>\n      <p class="source-card__number">数据源当前不可达，本轮已自动跳过；请检查网络或稍后刷新。</p>\n      <footer class="source-card__foot">\n        <span>连接超时</span>\n        <span>降级提示</span>\n      </footer>\n    </article>\n  ';
 }
 
 function sourceCardMarkup(snapshot: TyphoonSnapshot): string {
@@ -489,7 +529,7 @@ async function refresh(): Promise<void> {
   refreshing = true;
   setLoading(true);
   try {
-    renderSnapshots(await fetchTyphoonSnapshots());
+    renderSnapshots(await fetchTyphoonSnapshotsDetail());
   } catch {
     renderBadge();
   } finally {
