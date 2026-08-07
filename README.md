@@ -2,120 +2,113 @@
   <img src="docs/preview.png" alt="台风多源雷达预览" width="720" />
 </p>
 
-<h1 align="center">WEST PACIFIC OBSERVATION · Personal Station</h1>
+<h1 align="center">WEST PACIFIC OBSERVATION · Typhoon Radar</h1>
 
 <p align="center">
-  <b>个人极客观测站</b> — 把天气、网络与真实世界的信号，整理成可读的界面。
+  <b>西太平洋台风雷达</b> · 一个只做台风观测的个人数据界面
 </p>
 
 <p align="center">
-  <a href="https://crazyzhang277.github.io/zihao-personal-station/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
-  <img src="https://img.shields.io/badge/Data-IBTrACS%20v04r01-2ea44f?style=flat-square" alt="Data" />
-  <img src="https://img.shields.io/badge/Storms-1446%20(1980%E2%80%932024)-8f1d14?style=flat-square" alt="Storms" />
-  <img src="https://img.shields.io/badge/Tests-6%20passing-3f7c65?style=flat-square" alt="Tests" />
+  <a href="https://crazyzhang277.github.io/zihao-personal-station/typhoon.html"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-1f6feb?style=flat-square&logo=github" alt="Live" /></a>
+  <img src="https://img.shields.io/badge/Sources-JMA%20%7C%20CMA%20%7C%20CWA%20%7C%20JTWC-2ea44f?style=flat-square" alt="Sources" />
+  <img src="https://img.shields.io/badge/Archive-1980--2024-8f1d14?style=flat-square" alt="Archive" />
+  <img src="https://img.shields.io/badge/Tests-8%20passing-3f7c65?style=flat-square" alt="Tests" />
   <img src="https://img.shields.io/badge/License-MIT-f5a623?style=flat-square" alt="License" />
 </p>
 
 ---
 
-## ✨ 特性
+## 特点
 
 | | |
 | --- | --- |
-| 🌀 **实时多源对比** | 同时接入 JMA、CMA、CWA、JTWC 四家机构的真实台风路径、风圈与预报，每 5 分钟自动刷新，同一时刻的分歧一览无余。 |
-| 🗂️ **历史台风归档** | 一键切换实时 / 历史双模式，浏览 1980 年至今西北太平洋 **1400+ 条真实最佳路径**（NOAA IBTrACS）；支持按年份、中文名、英文名、编号搜索，路径按强度着色并标注稀疏关键节点。 |
-| 🌊 **风圈 / 影响范围** | 实线观测、虚线预报外推；半透明圆圈呈现各机构发布的 7 级 / 强风圈、10 级 / 暴风圈与 JTWC 风圈影响范围。 |
-| 🌤️ **天气观测站** | Open-Meteo 实时天气，失败自动回退演示数据。 |
-| 📡 **网络观测站** | 读取浏览器连接信息，并用 fetch 测量真实端点延迟。 |
-| 📓 **天气日志** | 自动记录每日天气，生成可翻阅的观测档案。 |
-| 📈 **延迟可视化** | 网络延迟的跨会话历史可视化。 |
-| 🧪 **实验舱** | 换算器与规划中的实验，工具慢慢生长。 |
+| **实时多源观测** | 同时接入 JMA、CMA、CWA 与 JTWC，比较当前中心位置、强度、路径和预报。 |
+| **按台风分别聚合** | 不管同时有多少个台风，每个独立台风都单独计算中心和影响范围，不会互相平均。 |
+| **综合平均风圈** | 对同一台风可用数据源的当前位置和风圈半径取平均，分别绘制强风圈、暴风圈与台风圈。 |
+| **连续预报路径** | 预报线从该台风最后一个实测点连接，避免路径断开。 |
+| **历史台风档案** | 浏览 1980 年以来的西北太平洋历史路径，支持年份、中文名、英文名与编号检索。 |
+| **离线可用** | 实时源不可用时自动切换到本地演示路径，页面仍可打开和检查。 |
 
-## 🛠️ 技术栈
+## 技术栈
 
 | Tech | Purpose |
 | --- | --- |
-| [Vite](https://vitejs.dev/) | 构建与开发服务器 |
-| [TypeScript](https://www.typescriptlang.org/) | 类型化的数据解析与页面逻辑 |
-| [Leaflet](https://leafletjs.com/) | 台风路径与风圈地图渲染 |
+| [Vite](https://vitejs.dev/) | 开发服务器与生产构建 |
+| [TypeScript](https://www.typescriptlang.org/) | 数据解析、聚合逻辑与页面交互 |
+| [Leaflet](https://leafletjs.com/) | 台风路径、预报线与风圈地图 |
 | CSS | Paper-console 视觉系统与响应式布局 |
 
-## 📊 数据源
+## 数据源
 
 | Agency | Coverage |
 | --- | --- |
-| JMA 日本气象厅 | Track, forecast, gale radius, storm radius |
-| CMA 中央气象台 | Track, forecast, 7/10/12-level wind radii |
-| CWA 中央气象署 | KML/Markdown track and wind polygon |
-| JTWC 联合台风警报中心 | WTPN31 bulletin, 34/50/64KT wind radii |
-| NOAA/NCEI IBTrACS v04r01 | 1980 年至今西北太平洋历史最佳路径 |
+| JMA 日本气象厅 | 实测路径、预报、强风圈与暴风圈 |
+| CMA 中央气象台 | 实测路径、预报、7/10/12 级风圈 |
+| CWA 台湾气象署 | KML/Markdown 路径与风圈多边形 |
+| JTWC 联合台风警报中心 | WTPN31 通报、34/50/64KT 风圈 |
+| NOAA/NCEI IBTrACS v04r01 | 1980 年以来西北太平洋历史最佳路径 |
 
-> 所有数据来自官方公开渠道。不同机构对同一时刻的中心位置、气压与强度存在细微差异——这正是多源对比要展示的价值。
+> 所有实时数据来自机构公开渠道。不同机构对同一时刻的中心位置、气压和强度可能存在差异；页面用来源对比和综合平均把这种差异明确展示出来。
 
-## 🗃️ 历史台风归档
+## 历史档案
 
-`scripts/update-historical-typhoons.mjs` 从 NOAA IBTrACS 下载并生成归档，产物为：
+`scripts/update-historical-typhoons.mjs` 从 NOAA IBTrACS 下载并生成归档：
 
 ```text
 public/data/typhoons/
-├── index.json              # 索引：全部台风摘要 + 年份列表
-└── years/<year>.json       # 按年份分片的完整路径点
+├── index.json              # 全部台风摘要与年份索引
+└── years/<year>.json       # 按年份存储的完整路径点
 ```
 
-生成器自动过滤 **1980 年以后的西北太平洋（WP）主路径**，并校验「至少 900 条记录、40 个年份」，拒绝发布不完整数据。
+更新数据：
 
 ```bash
-# 从 NOAA 下载最新数据并重新生成归档
 npm run update:typhoons
-
-# 使用本地 CSV（避免重复下载）
 npm run update:typhoons -- --source=/path/to/ibtracs.WP.list.v04r01.csv
 ```
 
-每月 **1 日 03:00 UTC**，GitHub Actions（`.github/workflows/update-historical-typhoons.yml`）自动刷新数据、运行测试、构建并直接提交到 `main`；也支持 `workflow_dispatch` 手动触发。
-
-## 🚀 快速开始
+## 快速开始
 
 ```bash
-npm install        # 安装依赖
-npm run dev        # 本地开发
-npm test           # 运行测试（自动打包 TS 模块）
-npm run build      # 生产构建 → dist/
-npm run preview    # 本地预览生产产物
+npm install
+npm run dev       # http://127.0.0.1:5173/typhoon.html
+npm test
+npm run build
+npm run preview
 ```
 
-## 📁 项目结构
+根地址 `/` 保留为兼容入口，会直接跳转到 `typhoon.html`。项目只构建台风雷达页面，其他观测、实验和个人介绍页面已移除。
+
+## 项目结构
 
 ```text
 .
-|-- src/
-|   |-- pages/              # 页面入口（台风 / 天气 / 网络 / 日志 / 延迟可视化）
-|   |-- lib/                # 台风 / 天气数据解析
-|   |-- data/               # 静态演示数据
-|   `-- styles/             # Paper-console 视觉系统
-|-- scripts/                # 数据生成器（IBTrACS 历史归档）与构建工具
-|-- tests/                  # Node 测试（CSV 解析 / 查询 / 强度 / CWA 回退）
-|-- public/data/typhoons/   # 生成的历史归档（索引 + 年份分片）
-|-- docs/                   # 文档与截图
-|-- .github/workflows/      # Pages 部署 + 月度归档刷新
-|-- *.html                  # Vite 多页入口（8 个页面）
-`-- package.json
+├── src/pages/typhoon.ts       # 台风页面与地图交互
+├── src/lib/typhoon-api.ts     # 多源抓取、解析、聚合与回退
+├── src/lib/historical-typhoons.ts
+├── src/styles/typhoon.css
+├── scripts/                   # 历史档案生成与导航构建工具
+├── tests/                     # API 解析、历史查询与台风显示测试
+├── public/data/typhoons/      # 历史台风归档
+├── docs/preview.png
+├── typhoon.html
+└── package.json
 ```
 
-## 🌐 部署
+## 部署
 
-推送 `main` 触发 GitHub Actions 自动部署：
+推送 `main` 后，GitHub Actions 会执行：
 
 ```text
-npm ci → npm run build → deploy-pages
+npm ci → npm test → npm run build → deploy-pages
 ```
 
 详见 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)。
 
 ---
 
-<p align="center"><sub>Paper-console 视觉系统 · 数据每天更新 · 用好奇心观测世界</sub></p>
+<p align="center"><sub>Paper-console 视觉系统 · 多源台风数据 · 只保留有用的观测</sub></p>
 
-## 📄 License
+## License
 
-[MIT](LICENSE) © 2026 西太平洋观测站 (WEST PACIFIC OBSERVATION)
+[MIT](LICENSE) · 2026 西太平洋观测站

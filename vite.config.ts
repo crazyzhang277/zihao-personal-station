@@ -30,12 +30,6 @@ export default defineConfig({
       input: {
         index: page("index"),
         typhoon: page("typhoon"),
-        weather: page("weather"),
-        network: page("network"),
-        lab: page("lab"),
-        about: page("about"),
-        "weather-log": page("weather-log"),
-        "latency-viz": page("latency-viz"),
       },
     },
   },

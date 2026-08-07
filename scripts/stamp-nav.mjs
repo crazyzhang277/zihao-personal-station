@@ -6,10 +6,7 @@ import { renderMasthead, renderNav } from "../src/lib/navigation.ts";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
 
-const PAGES = [
-  "index.html", "typhoon.html", "weather.html", "network.html",
-  "lab.html", "about.html", "weather-log.html", "latency-viz.html",
-];
+const PAGES = ["index.html", "typhoon.html"];
 
 const OPEN = '<div id="site-header">';
 const START = "<!-- site-header:start -->";

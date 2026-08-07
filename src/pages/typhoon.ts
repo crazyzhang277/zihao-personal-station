@@ -14,7 +14,9 @@ import {
 import {
   fetchTyphoonSnapshotsDetail,
   formatTime,
+  averageWindCircles,
   intensityLabels,
+  trackLinePoints,
   type TyphoonSnapshot,
   type TyphoonSnapshotDetail,
   type TyphoonSourceId,
@@ -78,6 +80,7 @@ const layers: Record<TyphoonSourceId, L.LayerGroup> = {
   jtwc: L.layerGroup().addTo(map),
   demo: L.layerGroup().addTo(map),
 };
+const windLayer = L.layerGroup().addTo(map);
 const historyLayer = L.layerGroup().addTo(map);
 
 const refreshButton = document.getElementById("refresh-typhoons");
@@ -136,31 +139,32 @@ function pointIntensity(intensity: string): string {
   return (intensityLabels[intensity] ?? intensity) || "未知";
 }
 
-function renderWindRadii(track: TyphoonTrack): void {
-  const latest = track.points.filter((point) => !point.isForecast).at(-1);
-  if (!latest) return;
-  const theme = sourceTheme[track.sourceId];
-  const group = layers[track.sourceId];
-  const windOptions = {
-    color: theme.color,
-    weight: 1.3,
-    dashArray: "5 6",
-    fillColor: theme.color,
-    fillOpacity: 0.09,
-  };
+const windBandTheme = {
+  gale: { color: "#5e6a63", fillColor: "#829087" },
+  storm: { color: "#a97c1f", fillColor: "#c79a48" },
+  typhoon: { color: "#a63c2b", fillColor: "#c45b48" },
+} as const;
 
-  if (latest.windPolygon?.length) {
-    L.polygon(latest.windPolygon, windOptions).addTo(group);
-  } else {
-    [...(latest.windRadii ?? [])]
-      .sort((a, b) => b.radiusKm - a.radiusKm)
-      .forEach((radius) => {
-        L.circle([latest.lat, latest.lng], {
-          ...windOptions,
-          radius: radius.radiusKm * 1000,
-        }).addTo(group);
-      });
-  }
+function renderAverageWindCircles(next: TyphoonSnapshot[]): void {
+  averageWindCircles(next).forEach((average) => {
+    [...average.radii].sort((a, b) => b.radiusKm - a.radiusKm).forEach((radius) => {
+      const theme = windBandTheme[radius.band];
+      L.circle([average.lat, average.lng], {
+        className: `typhoon-wind-circle typhoon-wind-circle--${radius.band}`,
+        color: theme.color,
+        weight: 1.8,
+        dashArray: "6 7",
+        fillColor: theme.fillColor,
+        fillOpacity: radius.band === "gale" ? 0.07 : radius.band === "storm" ? 0.1 : 0.14,
+        radius: radius.radiusKm * 1000,
+      })
+        .bindTooltip(
+          `${average.nameEn} ${radius.label} ${radius.radiusKm} km · ${radius.sourceCount} 源平均`,
+          { direction: "top" },
+        )
+        .addTo(windLayer);
+    });
+  });
 }
 
 function renderTrack(track: TyphoonTrack): void {
@@ -168,7 +172,7 @@ function renderTrack(track: TyphoonTrack): void {
   const group = layers[track.sourceId];
   const observed = track.points.filter((point) => !point.isForecast);
   const forecast = track.points.filter((point) => point.isForecast);
-  renderWindRadii(track);
+  const linePoints = trackLinePoints(track);
 
   if (observed.length > 1) {
     L.polyline(
@@ -179,7 +183,7 @@ function renderTrack(track: TyphoonTrack): void {
 
   if (forecast.length > 0) {
     L.polyline(
-      forecast.map((point) => [point.lat, point.lng] as [number, number]),
+      linePoints.forecast,
       { color: theme.color, weight: 2.4, opacity: 0.75, dashArray: "6 8" },
     ).addTo(group);
   }
@@ -245,7 +249,9 @@ function renderSnapshots(next: TyphoonSnapshotDetail): void {
   snapshots = next.snapshots;
   unavailableSources = next.unavailable;
   Object.values(layers).forEach((group) => group.clearLayers());
+  windLayer.clearLayers();
   snapshots.forEach((snapshot) => renderTrack(snapshot.track));
+  renderAverageWindCircles(snapshots);
   renderSourceCards();
   renderBadge();
   fitToSnapshots();
@@ -426,7 +432,7 @@ async function setMode(nextMode: TyphoonMode): Promise<void> {
   if (sourcePanelFoot) {
     sourcePanelFoot.textContent = historical
       ? "历史最佳路径来自 NOAA/NCEI IBTrACS v04r01，覆盖 1980 年至今的西北太平洋。历史路径用于回顾，不代表实时预报。"
-      : "实线为观测路径，虚线为预报外推；半透明圆圈为各机构发布的风圈影响范围。数据源不可用时会自动回退到本地演示路径。";
+      : "实线为观测路径，虚线为预报外推；每个台风分别显示按可用机构当前位置平均的强风、暴风与台风圈。数据源不可用时会自动回退到本地演示路径。";
   }
   showLiveLayers(!historical);
   if (historical) {

@@ -301,9 +301,21 @@
   width: 0.95rem;
   height: 0.95rem;
   margin-right: 0.4rem;
-  border: 2px dashed var(--muted);
+  border: 2px dashed #5e6a63;
   border-radius: 50%;
   vertical-align: middle;
+}
+
+.legend-circle--gale {
+  border-color: #5e6a63;
+}
+
+.legend-circle--storm {
+  border-color: #a97c1f;
+}
+
+.legend-circle--typhoon {
+  border-color: #a63c2b;
 }
 
 .history-legend span i {

@@ -60,6 +60,144 @@ export interface TyphoonSnapshot {
   status: TyphoonStatus;
 }
 
+export type WindCircleBand = "gale" | "storm" | "typhoon";
+
+export interface WindCircleBandAverage {
+  band: WindCircleBand;
+  label: string;
+  thresholdMps: number;
+  radiusKm: number;
+  sourceCount: number;
+}
+
+export interface WindCircleAverage {
+  key: string;
+  nameEn: string;
+  number: string;
+  lat: number;
+  lng: number;
+  sourceCount: number;
+  radii: WindCircleBandAverage[];
+}
+
+export function trackLinePoints(track: Pick<TyphoonTrack, "points">): {
+  observed: Array<[number, number]>;
+  forecast: Array<[number, number]>;
+} {
+  const observed = track.points
+    .filter((point) => !point.isForecast)
+    .map((point) => [point.lat, point.lng] as [number, number]);
+  const forecast = track.points
+    .filter((point) => point.isForecast)
+    .map((point) => [point.lat, point.lng] as [number, number]);
+  const latestObserved = observed.at(-1);
+
+  return {
+    observed,
+    forecast: latestObserved && forecast.length > 0 ? [latestObserved, ...forecast] : forecast,
+  };
+}
+
+const windCircleBandLabels: Record<WindCircleBand, string> = {
+  gale: "强风圈",
+  storm: "暴风圈",
+  typhoon: "台风圈",
+};
+
+function stormKey(track: TyphoonTrack): string {
+  const name = track.nameEn.trim().toUpperCase().replace(/[^A-Z0-9]+/g, "");
+  if (name && name !== "TYPHOON" && name !== "UNKNOWN") return `name:${name}`;
+  const number = track.number.trim();
+  return number && number !== "—" ? `number:${number}` : `track:${track.id}`;
+}
+
+function windCircleBand(thresholdMps: number): WindCircleBand {
+  if (thresholdMps < 21) return "gale";
+  if (thresholdMps < 29) return "storm";
+  return "typhoon";
+}
+
+function distanceKm(from: TyphoonPoint, to: [number, number]): number {
+  const radians = Math.PI / 180;
+  const lat1 = from.lat * radians;
+  const lat2 = to[0] * radians;
+  const deltaLat = (to[0] - from.lat) * radians;
+  const deltaLng = (to[1] - from.lng) * radians;
+  const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function pointWindRadii(point: TyphoonPoint): WindRadius[] {
+  if (point.windRadii?.length) return point.windRadii;
+  if (!point.windPolygon || point.windPolygon.length < 3) return [];
+  const radiusKm = Math.round(Math.max(...point.windPolygon.map((coordinate) => distanceKm(point, coordinate))));
+  return radiusKm > 0 ? [{ label: windCircleBandLabels.gale, thresholdMps: 17.2, radiusKm }] : [];
+}
+
+export function averageWindCircles(
+  snapshots: Array<Pick<TyphoonSnapshot, "track">>,
+): WindCircleAverage[] {
+  const grouped = new Map<string, TyphoonTrack[]>();
+  snapshots.forEach(({ track }) => {
+    const key = stormKey(track);
+    const tracks = grouped.get(key) ?? [];
+    tracks.push(track);
+    grouped.set(key, tracks);
+  });
+
+  return [...grouped.entries()].flatMap(([key, tracks]) => {
+    const pointsBySource = new Map<string, TyphoonPoint>();
+    tracks.forEach((track) => {
+      const point = track.points.filter((candidate) => !candidate.isForecast).at(-1) ?? track.points.at(-1);
+      if (point) pointsBySource.set(track.sourceId, point);
+    });
+    const latestPoints = [...pointsBySource.values()];
+    if (latestPoints.length === 0) return [];
+
+    const bandValues = new Map<WindCircleBand, WindRadius[]>();
+    latestPoints.forEach((point) => {
+      const sourceBands = new Map<WindCircleBand, WindRadius>();
+      pointWindRadii(point).forEach((radius) => {
+        if (!Number.isFinite(radius.radiusKm) || radius.radiusKm <= 0) return;
+        const band = windCircleBand(radius.thresholdMps);
+        const current = sourceBands.get(band);
+        if (!current || radius.radiusKm > current.radiusKm) sourceBands.set(band, radius);
+      });
+      sourceBands.forEach((radius, band) => {
+        const values = bandValues.get(band) ?? [];
+        values.push(radius);
+        bandValues.set(band, values);
+      });
+    });
+
+    const radii = (Object.keys(windCircleBandLabels) as WindCircleBand[])
+      .map((band) => {
+        const values = bandValues.get(band) ?? [];
+        if (values.length === 0) return null;
+        return {
+          band,
+          label: windCircleBandLabels[band],
+          thresholdMps: Math.round(values.reduce((sum, value) => sum + value.thresholdMps, 0) / values.length),
+          radiusKm: Math.round(values.reduce((sum, value) => sum + value.radiusKm, 0) / values.length),
+          sourceCount: values.length,
+        } satisfies WindCircleBandAverage;
+      })
+      .filter((radius): radius is WindCircleBandAverage => radius !== null);
+    if (radii.length === 0) return [];
+
+    const firstTrack = tracks[0];
+    return [{
+      key,
+      nameEn: firstTrack.nameEn,
+      number: firstTrack.number,
+      lat: latestPoints.reduce((sum, point) => sum + point.lat, 0) / latestPoints.length,
+      lng: latestPoints.reduce((sum, point) => sum + point.lng, 0) / latestPoints.length,
+      sourceCount: latestPoints.length,
+      radii,
+    } satisfies WindCircleAverage];
+  });
+}
+
 interface JmaTarget {
   tropicalCyclone?: string;
   typhoonNumber?: string;

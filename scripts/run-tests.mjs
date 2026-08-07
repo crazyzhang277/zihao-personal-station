@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "esbuild";
@@ -31,7 +31,13 @@ const env = {
 };
 
 const testArgs = ["--test", ...process.argv.slice(2)];
-if (testArgs.length === 2) testArgs.push("tests");
+if (process.argv.length === 2) {
+  const testFiles = (await readdir(resolve(root, "tests")))
+    .filter((file) => file.endsWith(".test.mjs"))
+    .sort()
+    .map((file) => resolve(root, "tests", file));
+  testArgs.push(...testFiles);
+}
 
 const child = spawn(process.execPath, testArgs, { cwd: root, env, stdio: "inherit" });
 child.on("exit", (code) => process.exit(code ?? 1));
