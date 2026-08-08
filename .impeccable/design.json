@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-08T20:45:00+08:00",
+  "title": "Design System: West Pacific Observation",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "workbench-ambient",
+        "value": "0 18px 48px rgba(0, 0, 0, 0.18)",
+        "purpose": "Ambient depth for the map and source workbench panels."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-standard",
+        "value": "180ms ease",
+        "purpose": "Borders, surfaces, and active control transitions."
+      },
+      {
+        "name": "page-reveal",
+        "value": "420ms ease",
+        "purpose": "Small initial reveal; disabled under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "560px" },
+      { "name": "tablet", "value": "820px" },
+      { "name": "rail", "value": "1040px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Mode Switch",
+      "kind": "button",
+      "refersTo": "button-mode-active",
+      "description": "Switch between current live tracks and the historical archive.",
+      "html": "<button class=\"ds-mode\">LIVE<br><span>实时台风</span></button>",
+      "css": ".ds-mode { background: #5bd6cf; color: #0b1214; border: 0; border-radius: 4px; min-height: 44px; padding: 6px 14px; font: 600 13px/1.2 Arial, sans-serif; text-align: left; } .ds-mode:focus-visible { outline: 2px solid #5bd6cf; outline-offset: 3px; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Search archive records by Chinese name, English name, number, or year.",
+      "html": "<input class=\"ds-search\" type=\"search\" aria-label=\"查找档案\" placeholder=\"中文名 / 英文名 / 编号\" />",
+      "css": ".ds-search { width: 100%; min-height: 41px; padding: 7px 10px; border: 1px solid rgba(204, 230, 225, 0.3); border-radius: 4px; background: #172527; color: #edf5f3; font: 400 13px/1.4 Arial, sans-serif; } .ds-search:focus { border-color: #5bd6cf; outline: 2px solid #5bd6cf; outline-offset: 2px; }"
+    },
+    {
+      "name": "Source Card",
+      "kind": "card",
+      "refersTo": "source-card",
+      "description": "Dense provenance record for one agency snapshot.",
+      "html": "<article class=\"ds-source-card\"><small>JMA · LIVE</small><strong>山竹 <em>MANGKHUT</em></strong><p>位置 20.10°N / 120.30°E</p></article>",
+      "css": ".ds-source-card { border: 1px solid rgba(204, 230, 225, 0.16); border-top: 2px solid #f3786d; border-radius: 4px; padding: 14px; background: #172527; color: #edf5f3; } .ds-source-card small { display: block; color: #f3786d; font: 600 10px/1.2 monospace; letter-spacing: .08em; } .ds-source-card strong { display: block; margin-top: 8px; font: 700 16px/1.2 Arial, sans-serif; } .ds-source-card em { color: #8da39f; font: 400 10px/1.2 monospace; } .ds-source-card p { margin: 8px 0 0; color: #c2d1ce; font: 400 12px/1.5 Arial, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Spectral Weather Desk",
+    "overview": "A dark operations desk for comparing moving weather evidence. Deep charcoal-green surfaces keep the map and data legible; cyan marks live observation, amber marks risk or comparison, and red/green states carry source and intensity meaning.",
+    "keyCharacteristics": [
+      "Map-first monitoring layout with a fixed source comparison rail.",
+      "Dark tonal surfaces with a small, semantic status palette.",
+      "Mono labels for provenance and sans-serif Chinese content for scanning.",
+      "Fine borders and 4px/8px corners; no oversized decorative cards."
+    ],
+    "rules": [
+      { "name": "The Map Is the Light Rule", "body": "The map is the only bright field; surrounding UI stays dark so path and marker colors retain hierarchy.", "section": "colors" },
+      { "name": "The Two-Layer Label Rule", "body": "Pair a short mono label with a readable Chinese title; metadata never replaces the content title.", "section": "typography" }
+    ],
+    "dos": [
+      "Do keep source identity, observed/forecast meaning, and unavailable states visible in text.",
+      "Do reserve the large first viewport for the map and the primary monitoring task."
+    ],
+    "donts": [
+      "Don't add decorative dashboards, gradients, or motion that compete with map reading.",
+      "Don't use color alone to communicate source health or storm strength."
+    ]
+  }
+}

@@ -1,40 +1,63 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1214" />
     <meta name="description" content="JMA、CMA、CWA 与 JTWC 真实台风数据，多源对比路径、强度、风圈与预报。" />
-    <title>台风多源雷达 / 西太平洋观测站</title>
+    <link rel="icon" href="data:," />
+    <title>西太平洋台风监测台</title>
     <link rel="stylesheet" href="/src/styles/tokens.css" />
     <link rel="stylesheet" href="/src/styles/base.css" />
     <link rel="stylesheet" href="/src/styles/components.css" />
-    <link rel="stylesheet" href="/src/styles/pages.css" />
-    <link rel="stylesheet" href="/src/styles/submenu-fix.css" />
+    <link rel="stylesheet" href="/src/styles/typhoon.css" />
   </head>
   <body data-page="typhoon">
+    <!--
+      THESIS: 把多源台风资料组织成一张可扫描的工作台，拒绝装饰性新闻稿布局。
+      OWN-WORLD: 深色海图底、青色观测线、琥珀风险标记与等宽数据标签组成气象值班台。
+      STORY: 先看实时态势，再对照机构差异，最后从同一工作区进入历史档案。
+      FIRST VIEWPORT: 顶部状态栏、实时态势标题与控制栏，地图占主位，数据源列固定在右侧。
+      FORM: Spectral Weather Desk，grounded direction 4，seed key 647ee192。
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
     <div class="page-shell">
-      <div id="site-header">
-      <!-- site-header:start --><header class="masthead"><a class="masthead__brand" href="typhoon.html" aria-label="回到台风雷达"><span class="stamp masthead__stamp" aria-hidden="true">观</span><span class="masthead__title"><strong>西太平洋观测站</strong><span>WEST PACIFIC OBSERVATION</span></span><span class="masthead__divider" aria-hidden="true"></span><span class="masthead__station">PERSONAL STATION / 个人观测站</span></a><div class="masthead__right"><p class="masthead__issue">VOL. 01 — 2026</p><button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__line" aria-hidden="true"></span><span class="visually-hidden">打开导航菜单</span></button></div></header><nav id="site-nav" class="site-nav" aria-label="主导航" aria-expanded="false"><ul class="nav-list"><li class="nav-item is-active"><a href="typhoon.html" aria-current="page">台风雷达</a></li></ul><p class="nav-foot">OBSERVATION STATION / VOL. 01 — 2026</p></nav><!-- site-header:end -->
-    </div>
+      <div id="site-header"></div>
       <main id="main-content">
-        <header class="page-heading">
-          <div>
-            <p class="page-heading__issue">ISSUE 02 / TYPHOON RADAR</p>
-            <h1>台风多源观测</h1>
+        <header class="dashboard-hero">
+          <div class="dashboard-hero__copy">
+            <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> LIVE WEATHER INTELLIGENCE</p>
+            <h1>西太平洋台风监测台</h1>
+            <p class="dashboard-hero__lede">把 JMA、CMA、CWA 与 JTWC 的路径、强度和预报放在同一张地图上，快速识别观测共识与分歧。</p>
           </div>
-          <p class="page-heading__note">同时接入 JMA 日本气象厅、CMA 中央气象台、CWA 台湾中央气象署与 JTWC 美国联合台风警报中心，对比真实路径、风圈与预报，每 5 分钟自动刷新。</p>
+          <div class="dashboard-hero__readout" aria-label="监测范围摘要">
+            <div><span>区域</span><strong>WEST PACIFIC</strong></div>
+            <div><span>坐标系</span><strong>WGS84</strong></div>
+            <div><span>状态</span><strong class="readout-live">LIVE / 05 MIN</strong></div>
+          </div>
         </header>
+
+        <section class="metric-strip" aria-label="监测概览">
+          <div class="metric-cell"><span>DATA CHANNELS</span><strong>04</strong><small>JMA · CMA · CWA · JTWC</small></div>
+          <div class="metric-cell"><span>UPDATE CYCLE</span><strong>05<span>MIN</span></strong><small>自动刷新，支持手动重连</small></div>
+          <div class="metric-cell"><span>ARCHIVE RANGE</span><strong>1980—NOW</strong><small>IBTrACS 西北太平洋历史路径</small></div>
+          <div class="metric-cell metric-cell--signal"><span>VIEW MODE</span><strong>COMPARE</strong><small>实测 / 预报 / 综合风圈</small></div>
+        </section>
 
         <section class="typhoon-live" aria-labelledby="typhoon-live-title">
           <div class="typhoon-toolbar">
-            <div>
-              <p class="page-heading__issue">LIVE FEED</p>
-              <h2 id="typhoon-live-title">台风路径观测</h2>
+            <div class="toolbar-title">
+              <p class="eyebrow">01 / MONITOR</p>
+              <h2 id="typhoon-live-title">实时态势</h2>
+              <p>按机构叠加路径，查看最新中心位置与预报外推。</p>
             </div>
             <div class="typhoon-toolbar__meta">
               <span id="data-badge" class="typhoon-data-badge typhoon-data-badge--loading">连接中</span>
               <span id="last-updated" class="typhoon-last-updated">上次刷新 —</span>
-              <button id="refresh-typhoons" class="icon-button" type="button" title="立即刷新">⟳</button>
+              <button id="refresh-typhoons" class="icon-button" type="button" title="立即刷新">
+                <span aria-hidden="true" class="refresh-glyph">↻</span>
+                <span class="visually-hidden">立即刷新台风数据</span>
+              </button>
             </div>
           </div>
 
@@ -58,12 +81,19 @@
               </label>
               <span id="history-count" class="history-count" aria-live="polite">—</span>
             </div>
+            <p class="modebar-note">实时源自动轮询 · 历史档案按年加载</p>
           </div>
 
           <div class="typhoon-grid">
             <div class="typhoon-map-panel">
+              <div class="map-panel__header">
+                <span>MAP / WESTERN PACIFIC</span>
+                <span><i class="map-status-dot" aria-hidden="true"></i> TRACKING</span>
+              </div>
               <div class="typhoon-map-frame" id="map-frame">
                 <div id="typhoon-map" role="application" aria-label="西太平洋台风路径地图"></div>
+                <div class="map-corner map-corner--tl">N 60° / 05° · E 100° / 180°</div>
+                <div class="map-corner map-corner--br">LIVE OVERLAY / WGS84</div>
                 <div id="map-loading" class="map-loading">正在连接真实数据源…</div>
               </div>
               <div class="typhoon-map__footer">
@@ -82,10 +112,10 @@
                     <span><i class="legend-circle legend-circle--typhoon"></i>综合平均台风圈</span>
                   </div>
                   <div id="history-legend" class="typhoon-legend__group history-legend" hidden>
-                    <span><i style="--legend-color:#52758a"></i>热带低压</span>
-                    <span><i style="--legend-color:#3f7c65"></i>热带风暴</span>
-                    <span><i style="--legend-color:#d37828"></i>台风</span>
-                    <span><i style="--legend-color:#8f1d14"></i>超强台风</span>
+                    <span><i style="--legend-color:#7bc4b5"></i>热带低压</span>
+                    <span><i style="--legend-color:#83d3a7"></i>热带风暴</span>
+                    <span><i style="--legend-color:#f3bb63"></i>台风</span>
+                    <span><i style="--legend-color:#f3786d"></i>超强台风</span>
                   </div>
                 </div>
                 <p>底图 © 高德地图（OpenStreetMap 不可用时自动回退） · 坐标 WGS84</p>
@@ -95,15 +125,17 @@
             <aside class="source-panel" aria-labelledby="source-panel-title">
               <div class="source-panel__head">
                 <div>
-                  <p class="page-heading__issue">SOURCE COMPARE</p>
+                  <p class="eyebrow">02 / SOURCES</p>
                   <h2 id="source-panel-title">多源对比</h2>
                 </div>
-                <span class="stamp" aria-hidden="true">观</span>
+                <span class="source-panel__count" aria-hidden="true">04</span>
               </div>
+              <p class="source-panel__intro">同一时间窗内的机构观测。颜色对应地图路径，状态反映本轮连接结果。</p>
               <div id="source-cards" class="source-cards" aria-live="polite">
                 <p class="source-cards__empty">正在拉取 JMA + CMA + CWA + JTWC 数据…</p>
               </div>
               <div id="history-panel" class="history-panel" hidden>
+                <div class="history-panel__label"><span>ARCHIVE INDEX</span><span>SELECT A TRACK</span></div>
                 <div id="history-results" class="history-results" aria-live="polite"></div>
                 <article id="history-detail" class="history-detail" hidden></article>
               </div>
@@ -122,4 +154,3 @@
     <script type="module" src="/src/pages/typhoon.ts"></script>
   </body>
 </html>
-
